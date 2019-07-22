@@ -36,3 +36,36 @@ All contributors are welcome! For information on how to build, test, and release
 ## License
 
 The Bugsnag Silex library is free software released under the MIT License. See [LICENSE.txt](LICENSE.txt) for details.
+
+### add to Spryker
+Open \Pyz\Yves\ShopApplication\YvesBootstrap::registerServiceProviders and add at the end
+```
+        $this->application->set('bugsnag.options',[
+            'api_key' => '<YOUR-API-KEY>',
+        ]);
+        $this->application->error(
+            function (\Exception $error) {
+              $this->application->set('bugsnag.notifier',[$error]);
+            }
+        );
+
+        //test your integration
+        //$this->application['bugsnag']->notifyException(new \RuntimeException("Test Yves error"));
+```
+Open 
+\Pyz\Zed\Application\Communication\ZedBootstrap::setUp and add as the end
+```
+$this->application->register(new Silex1ServiceProvider());
+
+        $this->application->set('bugsnag.options',[
+            'api_key' => '<YOUR-API-KEY>',
+        ]);
+        $this->application->error(
+            function (\Exception $error) {
+                $this->application->set('bugsnag.notifier',[$error]);
+            }
+        );
+        $this->application['bugsnag']->notifyException(new \RuntimeException("Test zed error"));
+```
+
+        
