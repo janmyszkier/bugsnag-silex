@@ -46,7 +46,8 @@ abstract class AbstractServiceProvider
         }
 
         if (!isset($config['user']) || $config['user']) {
-            $this->setupUserDetection($client, $app);
+            /* @FIXME: disable user detection for the time being */
+            //$this->setupUserDetection($client, $app);
         }
 
         $this->setupPaths($client, isset($config['strip_path']) ? $config['strip_path'] : null, isset($config['project_root']) ? $config['project_root'] : null);
